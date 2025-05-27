@@ -19,7 +19,7 @@ variable "mgc_key_secret" {
 variable "ssh_key_name" {
   description = "Nome da chave SSH"
   type        = string
-  default     = "nataliagranato"
+  default     = "nataliagranatodeassis"
 }
 
 variable "ssh_key_value" {
