@@ -43,7 +43,7 @@ jobs:
           TF_VAR_mgc_api_key: ${{ secrets.API_KEY }}
           TF_VAR_mgc_key_id: ${{ secrets.KEY_PAIR_ID }}
           TF_VAR_mgc_key_secret: ${{ secrets.KEY_PAIR_SECRET }}
-        run: terraform plan -var-file=terraform.tfvars
+        run: terraform plan
 
       - name: Terraform Apply
         env:
@@ -51,4 +51,4 @@ jobs:
           TF_VAR_mgc_api_key: ${{ secrets.API_KEY }}
           TF_VAR_mgc_key_id: ${{ secrets.KEY_PAIR_ID }}
           TF_VAR_mgc_key_secret: ${{ secrets.KEY_PAIR_SECRET }}
-        run: terraform apply -var-file=terraform.tfvars -auto-approve
+        run: terraform apply -auto-approve
