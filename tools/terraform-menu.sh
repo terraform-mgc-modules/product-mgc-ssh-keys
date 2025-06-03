@@ -2,7 +2,7 @@
 # Script menu interativo para gerenciar o projeto Terraform
 # Uso: ./terraform-menu.sh
 
-set -e
+set -euo pipefail
 
 # Cores para output
 RED='\033[0;31m'
@@ -113,6 +113,7 @@ while true; do
             ;;
         6)
             print_color $YELLOW "🧪 Testando conectividade R2..."
+            load_env
             ./tools/test-r2-backend.sh
             ;;
         7)
