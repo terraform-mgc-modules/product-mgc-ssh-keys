@@ -77,6 +77,22 @@ cd tools
 ./test-r2-backend.sh
 ```
 
+### `validate-security.sh`
+Valida workflows de segurança, configurações e detecta possíveis problemas.
+
+```bash
+cd tools
+./validate-security.sh
+```
+
+Este script verifica:
+- Existência e sintaxe dos workflows
+- Configuração do Terraform
+- Ferramentas de segurança instaladas
+- Permissões dos workflows
+- Secrets hardcoded
+- Configuração do .gitignore
+
 ## Pré-requisitos
 
 Todos os scripts requerem que o arquivo `.env` esteja configurado no diretório raiz do projeto com as seguintes variáveis:
