@@ -11,7 +11,22 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Função para imprimir com cores
+# Prints a message to the terminal in the specified color.
+#
+# Arguments:
+#
+# * color: ANSI color code to use for the message.
+# * message: The text to display.
+#
+# Outputs:
+#
+# * The message printed to STDOUT in the chosen color, followed by a reset to default color.
+#
+# Example:
+#
+# ```bash
+# print_color "$GREEN" "Operation successful."
+# ```
 print_color() {
     local color=$1
     local message=$2
@@ -35,7 +50,20 @@ if [ ! -f .env ]; then
     exit 1
 fi
 
-# Função para carregar variáveis
+# Loads environment variables from the .env file into the current shell session.
+#
+# This function exports all variables defined in the .env file, making them available to subsequent commands in the script.
+#
+# Globals:
+#
+# * .env file in the current directory must exist and be readable.
+#
+# Example:
+#
+# ```bash
+# load_env
+# echo "$MY_ENV_VAR" # Variable from .env is now available
+# ```
 load_env() {
     print_color $BLUE "🔧 Carregando variáveis do arquivo .env..."
     set -a
@@ -43,7 +71,18 @@ load_env() {
     set +a
 }
 
-# Menu principal
+# Displays the main interactive menu for Terraform project management.
+#
+# Outputs:
+#
+# * Prints a colored menu with options for running Terraform commands, testing connectivity, viewing documentation, or exiting.
+#
+# Example:
+#
+# ```bash
+# show_menu
+# # (Displays the interactive menu in the terminal)
+# ```
 show_menu() {
     clear
     print_color $GREEN "🚀 TERRAFORM SSH KEYS - MAGALU CLOUD"
@@ -61,7 +100,7 @@ show_menu() {
     echo ""
 }
 
-# Função para executar comandos terraform
+# ```
 run_terraform() {
     local cmd=$1
     load_env
