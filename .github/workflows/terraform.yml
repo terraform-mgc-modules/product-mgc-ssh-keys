@@ -12,6 +12,16 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Ação a executar (apply ou destroy)'
+        required: true
+        default: 'apply'
+        type: choice
+        options:
+          - apply
+          - destroy
 
 jobs:
   terraform:
@@ -74,6 +84,7 @@ jobs:
         run: terraform plan
 
       - name: Terraform Apply
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'apply' }}
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
@@ -83,3 +94,15 @@ jobs:
           TF_VAR_mgc_key_id: ${{ secrets.MGC_KEY_ID }}
           TF_VAR_mgc_key_secret: ${{ secrets.MGC_KEY_SECRET }}
         run: terraform apply -auto-approve
+
+      - name: Terraform Destroy
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'destroy' }}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_VAR_ssh_key_value: ${{ secrets.SSH_KEY_VALUE }}
+          TF_VAR_mgc_api_key: ${{ secrets.MGC_API_KEY }}
+          TF_VAR_mgc_key_id: ${{ secrets.MGC_KEY_ID }}
+          TF_VAR_mgc_key_secret: ${{ secrets.MGC_KEY_SECRET }}
+        run: terraform destroy -auto-approve
