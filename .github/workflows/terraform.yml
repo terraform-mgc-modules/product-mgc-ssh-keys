@@ -2,8 +2,6 @@ name: Terraform Format, Validate, and Test
 
 permissions:
   contents: read
-  # Adicione permissões extras apenas se necessário
-
 on:
   push:
     branches:
@@ -40,49 +38,63 @@ jobs:
       - name: Terraform Init
         run: terraform init -upgrade
         env:
-          # Credenciais para o backend Cloudflare R2 (usa variáveis AWS)
+          # Cloudflare API Token 
+          TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_ACCESS_SECRET }}
-          # Cloudflare API Token (para provider cloudflare se necessário)
-          TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          
-          # Variáveis do Terraform para o provider MGC
           TF_VAR_ssh_key_value: ${{ secrets.SSH_KEY_VALUE }}
+          # Magalu Cloud API Token
           TF_VAR_mgc_api_key: ${{ secrets.MGC_API_KEY }}
           TF_VAR_mgc_key_id: ${{ secrets.MGC_KEY_ID }}
           TF_VAR_mgc_key_secret: ${{ secrets.MGC_KEY_SECRET }}
 
       - name: Terraform Format
         env:
+          # Cloudflare API Token 
+          TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_ACCESS_SECRET }}
-          # Cloudflare API Token (para provider cloudflare se necessário)
-          TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_VAR_ssh_key_value: ${{ secrets.SSH_KEY_VALUE }}
+          # Magalu Cloud API Token
+          TF_VAR_mgc_api_key: ${{ secrets.MGC_API_KEY }}
+          TF_VAR_mgc_key_id: ${{ secrets.MGC_KEY_ID }}
+          TF_VAR_mgc_key_secret: ${{ secrets.MGC_KEY_SECRET }}
         run: terraform fmt -check -recursive -diff
 
       - name: Terraform Validate
         env:
+          # Cloudflare API Token 
+          TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_ACCESS_SECRET }}
-          # Cloudflare API Token (para provider cloudflare se necessário)
-          TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_VAR_ssh_key_value: ${{ secrets.SSH_KEY_VALUE }}
+          # Magalu Cloud API Token
+          TF_VAR_mgc_api_key: ${{ secrets.MGC_API_KEY }}
+          TF_VAR_mgc_key_id: ${{ secrets.MGC_KEY_ID }}
+          TF_VAR_mgc_key_secret: ${{ secrets.MGC_KEY_SECRET }}
         run: terraform validate
 
       - name: Terraform Test
         env:
+          # Cloudflare API Token 
+          TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_ACCESS_SECRET }}
-          # Cloudflare API Token (para provider cloudflare se necessário)
-          TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_VAR_ssh_key_value: ${{ secrets.SSH_KEY_VALUE }}
+          # Magalu Cloud API Token
+          TF_VAR_mgc_api_key: ${{ secrets.MGC_API_KEY }}
+          TF_VAR_mgc_key_id: ${{ secrets.MGC_KEY_ID }}
+          TF_VAR_mgc_key_secret: ${{ secrets.MGC_KEY_SECRET }}
         run: terraform test
 
       - name: Terraform Plan
         env:
+          # Cloudflare API Token 
+          TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_ACCESS_SECRET }}
-          # Cloudflare API Token (para provider cloudflare se necessário)
-          TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}         
           TF_VAR_ssh_key_value: ${{ secrets.SSH_KEY_VALUE }}
+          # Magalu Cloud API Token
           TF_VAR_mgc_api_key: ${{ secrets.MGC_API_KEY }}
           TF_VAR_mgc_key_id: ${{ secrets.MGC_KEY_ID }}
           TF_VAR_mgc_key_secret: ${{ secrets.MGC_KEY_SECRET }}
@@ -91,11 +103,12 @@ jobs:
       - name: Terraform Apply
         if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'apply' }}
         env:
+          # Cloudflare API Token 
+          TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_ACCESS_SECRET }}
-          # Cloudflare API Token (para provider cloudflare se necessário)
-          TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           TF_VAR_ssh_key_value: ${{ secrets.SSH_KEY_VALUE }}
+          # Magalu Cloud API Token
           TF_VAR_mgc_api_key: ${{ secrets.MGC_API_KEY }}
           TF_VAR_mgc_key_id: ${{ secrets.MGC_KEY_ID }}
           TF_VAR_mgc_key_secret: ${{ secrets.MGC_KEY_SECRET }}
@@ -104,11 +117,12 @@ jobs:
       - name: Terraform Destroy
         if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'destroy' }}
         env:
-          # Cloudflare API Token (para provider cloudflare se necessário)
+          # Cloudflare API Token 
           TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_ACCESS_SECRET }}
           TF_VAR_ssh_key_value: ${{ secrets.SSH_KEY_VALUE }}
+          # Magalu Cloud API Token
           TF_VAR_mgc_api_key: ${{ secrets.MGC_API_KEY }}
           TF_VAR_mgc_key_id: ${{ secrets.MGC_KEY_ID }}
           TF_VAR_mgc_key_secret: ${{ secrets.MGC_KEY_SECRET }}
