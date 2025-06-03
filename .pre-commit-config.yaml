@@ -1,10 +1,70 @@
+ci:
+  autoupdate_schedule: quarterly
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.3.0
+    rev: v5.0.0
     hooks:
-      - id: check-yaml
+      # Git style
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: check-vcs-permalinks
+      - id: forbid-new-submodules
+      - id: no-commit-to-branch
+
+      # Common errors
       - id: end-of-file-fixer
       - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+        exclude: CHANGELOG.md
+      - id: check-yaml
+      - id: check-merge-conflict
+      - id: check-executables-have-shebangs
+
+      # Cross platform
+      - id: check-case-conflict
+      - id: mixed-line-ending
+        args: [--fix=lf]
+
+      # Non-modifying checks:
+      - id: name-tests-test
+        files: >-
+          ^tests/[^_].*\.py$
+
+      # Security
+      - id: detect-aws-credentials
+        args:
+          - --allow-missing-credentials
+      - id: detect-private-key
+
+    # Detect hardcoded secrets
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.26.0
+    hooks:
+      - id: gitleaks
+
+  # YAML
+  - repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
+    rev: 0.2.3
+    hooks:
+      - id: yamlfmt
+        args:
+          - --mapping=2
+          - --sequence=2
+          - --offset=0
+          - --width=75
+          - --implicit_start
+
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.37.1
+    hooks:
+      - id: yamllint
+        types:
+          - file
+          - yaml
+        args:
+          - --strict
+
   - repo: https://github.com/antonbabenko/pre-commit-terraform
     rev: v1.96.1
     hooks:
@@ -13,16 +73,3 @@ repos:
         args:
           - --args=--sort-by=required
           - md
-      - id: terraform_tflint
-        args:
-          - --args=--color
-  - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.26.0
-    hooks:
-      - id: gitleaks
-      
-  # Detect hardcoded secrets
-- repo: https://github.com/gitleaks/gitleaks
-  rev: v8.26.0
-  hooks:
-  - id: gitleaks
