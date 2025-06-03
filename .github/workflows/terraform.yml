@@ -1,4 +1,4 @@
-name: Terraform Format, Validate, and Test
+name: Terraform Provisioning
 
 permissions:
   contents: read
@@ -40,6 +40,8 @@ jobs:
         env:
           # Cloudflare API Token 
           TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_VAR_r2_access_key: ${{ secrets.R2_ACCESS_KEY }}
+          TF_VAR_r2_access_secret: ${{ secrets.R2_ACCESS_SECRET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_ACCESS_SECRET }}
           TF_VAR_ssh_key_value: ${{ secrets.SSH_KEY_VALUE }}
@@ -52,6 +54,8 @@ jobs:
         env:
           # Cloudflare API Token 
           TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_VAR_r2_access_key: ${{ secrets.R2_ACCESS_KEY }}
+          TF_VAR_r2_access_secret: ${{ secrets.R2_ACCESS_SECRET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_ACCESS_SECRET }}
           TF_VAR_ssh_key_value: ${{ secrets.SSH_KEY_VALUE }}
@@ -65,6 +69,8 @@ jobs:
         env:
           # Cloudflare API Token 
           TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_VAR_r2_access_key: ${{ secrets.R2_ACCESS_KEY }}
+          TF_VAR_r2_access_secret: ${{ secrets.R2_ACCESS_SECRET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_ACCESS_SECRET }}
           TF_VAR_ssh_key_value: ${{ secrets.SSH_KEY_VALUE }}
@@ -78,6 +84,8 @@ jobs:
         env:
           # Cloudflare API Token 
           TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_VAR_r2_access_key: ${{ secrets.R2_ACCESS_KEY }}
+          TF_VAR_r2_access_secret: ${{ secrets.R2_ACCESS_SECRET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_ACCESS_SECRET }}
           TF_VAR_ssh_key_value: ${{ secrets.SSH_KEY_VALUE }}
@@ -91,6 +99,8 @@ jobs:
         env:
           # Cloudflare API Token 
           TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_VAR_r2_access_key: ${{ secrets.R2_ACCESS_KEY }}
+          TF_VAR_r2_access_secret: ${{ secrets.R2_ACCESS_SECRET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_ACCESS_SECRET }}
           TF_VAR_ssh_key_value: ${{ secrets.SSH_KEY_VALUE }}
@@ -105,6 +115,8 @@ jobs:
         env:
           # Cloudflare API Token 
           TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_VAR_r2_access_key: ${{ secrets.R2_ACCESS_KEY }}
+          TF_VAR_r2_access_secret: ${{ secrets.R2_ACCESS_SECRET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_ACCESS_SECRET }}
           TF_VAR_ssh_key_value: ${{ secrets.SSH_KEY_VALUE }}
@@ -119,6 +131,8 @@ jobs:
         env:
           # Cloudflare API Token 
           TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_VAR_r2_access_key: ${{ secrets.R2_ACCESS_KEY }}
+          TF_VAR_r2_access_secret: ${{ secrets.R2_ACCESS_SECRET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_ACCESS_SECRET }}
           TF_VAR_ssh_key_value: ${{ secrets.SSH_KEY_VALUE }}
