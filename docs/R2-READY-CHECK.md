@@ -73,8 +73,8 @@ cp .env.example .env
 source .env
 
 # 3. Teste o backend R2
-chmod +x test-r2-backend.sh
-./test-r2-backend.sh
+chmod +x tools/test-r2-backend.sh
+./tools/test-r2-backend.sh
 
 # 4. Execute Terraform
 terraform init -upgrade

@@ -39,8 +39,8 @@ fi
 echo "✅ AWS CLI encontrado: $(aws --version)"
 
 # Configurar endpoint do Cloudflare R2
-BUCKET_NAME="nataliagranato"
-ENDPOINT="https://4839c9636a58fa9490bbe3d2e686ad98.r2.cloudflarestorage.com"
+BUCKET_NAME="${R2_BUCKET_NAME:-nataliagranato}"
+ENDPOINT="${R2_ENDPOINT_URL:-https://4839c9636a58fa9490bbe3d2e686ad98.r2.cloudflarestorage.com}"
 REGION="auto"
 
 echo ""

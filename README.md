@@ -41,14 +41,15 @@ product-mgc-ssh-keys/
 
 Configure os seguintes secrets no seu repositório GitHub (Settings → Secrets and variables → Actions):
 
-| Secret Name        | Descrição                                 | Exemplo                      |
-| ------------------ | ----------------------------------------- | ---------------------------- |
-| `MGC_API_KEY`      | API Key da Magalu Cloud                   | `your-api-key-here`          |
-| `MGC_KEY_ID`       | Access Key ID para Object Storage         | `your-access-key-id`         |
-| `MGC_KEY_SECRET`   | Secret Access Key para Object Storage     | `your-secret-access-key`     |
-| `R2_ACCESS_KEY`    | Access Key ID do Cloudflare R2            | `your-r2-access-key`         |
-| `R2_ACCESS_SECRET` | Secret Access Key do Cloudflare R2        | `your-r2-secret-key`         |
-| `SSH_KEY_VALUE`    | Conteúdo da chave SSH pública             | `ssh-rsa AAAAB3NzaC1yc2E...` |
+| Secret Name           | Descrição                                      | Exemplo                      |
+| --------------------- | ---------------------------------------------- | ---------------------------- |
+| `MGC_API_KEY`         | API Key da Magalu Cloud                        | `your-api-key-here`          |
+| `MGC_KEY_ID`          | Access Key ID para Object Storage              | `your-access-key-id`         |
+| `MGC_KEY_SECRET`      | Secret Access Key para Object Storage          | `your-secret-access-key`     |
+| `SSH_KEY_VALUE`       | Conteúdo da chave SSH pública                  | `ssh-rsa AAAAB3NzaC1yc2E...` |
+| `R2_ACCESS_KEY`       | Access Key ID do Cloudflare R2                 | `your-r2-access-key`         |
+| `R2_ACCESS_SECRET`    | Secret Access Key do Cloudflare R2             | `your-r2-secret-key`         |
+| `CLOUDFLARE_API_TOKEN`| API Token do Cloudflare (para provider opcional)| `your-cloudflare-api-token`  |
 
 > **Importante:** Nunca exponha esses secrets em código, logs ou arquivos versionados. Mantenha-os apenas no GitHub Secrets.
 >
@@ -166,7 +167,9 @@ O pipeline GitHub Actions executa os seguintes passos:
 5. **Validate**: Valida a sintaxe dos arquivos
 6. **Test**: Executa testes do Terraform (se configurados)
 7. **Plan**: Gera o plano de execução
-8. **Apply**: Aplica as mudanças (apenas na branch main)
+8. **Apply/Destroy**: Deve ser acionado manualmente via GitHub Actions (workflow_dispatch), escolhendo a ação desejada (`apply` ou `destroy`). Não é mais executado automaticamente na branch main.
+
+> **Importante:** Para aplicar ou destruir mudanças, acesse a aba "Actions" no GitHub, selecione o workflow Terraform e clique em "Run workflow", escolhendo a ação desejada.
 
 ## 📋 Variáveis
 

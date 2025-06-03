@@ -4,6 +4,9 @@
 
 set -e  # Parar em caso de erro
 
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$script_dir/.."
+
 # Verificar se o arquivo .env existe
 if [ ! -f .env ]; then
     echo "❌ Arquivo .env não encontrado!"
@@ -20,10 +23,10 @@ set +a
 # Verificar se todas as variáveis necessárias estão definidas
 echo "🔍 Verificando variáveis..."
 required_vars=(
-    "TF_VAR_mgc_api_key"
-    "TF_VAR_mgc_key_id" 
-    "TF_VAR_mgc_key_secret"
-    "TF_VAR_ssh_key_value"
+    "MGC_API_KEY"
+    "MGC_KEY_ID"
+    "MGC_KEY_SECRET"
+    "SSH_KEY_VALUE"
     "AWS_ACCESS_KEY_ID"
     "AWS_SECRET_ACCESS_KEY"
 )
@@ -35,6 +38,12 @@ for var in "${required_vars[@]}"; do
     fi
     echo "✅ $var está configurada"
 done
+
+# Exportar variáveis para o Terraform
+export TF_VAR_mgc_api_key="$MGC_API_KEY"
+export TF_VAR_mgc_key_id="$MGC_KEY_ID"
+export TF_VAR_mgc_key_secret="$MGC_KEY_SECRET"
+export TF_VAR_ssh_key_value="$SSH_KEY_VALUE"
 
 echo "🎉 Todas as variáveis estão configuradas!"
 
@@ -53,11 +62,11 @@ case $cmd in
         ;;
     "apply")
         echo "🚀 Executando terraform apply..."
-        terraform apply
+        terraform apply -auto-approve
         ;;
     "destroy")
         echo "💥 Executando terraform destroy..."
-        terraform destroy
+        terraform destroy -auto-approve
         ;;
     *)
         echo "❌ Comando inválido: $cmd"
