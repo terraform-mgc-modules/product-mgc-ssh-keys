@@ -11,7 +11,22 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Função para imprimir com cores
+# Prints a message to the terminal in the specified color.
+#
+# Arguments:
+#
+# * color: The color code to use for the message.
+# * message: The text message to display.
+#
+# Outputs:
+#
+# * The message printed to STDOUT in the given color, followed by a reset to default color.
+#
+# Example:
+#
+# ```bash
+# print_color "$GREEN" "Initialization successful."
+# ```
 print_color() {
     local color=$1
     local message=$2
