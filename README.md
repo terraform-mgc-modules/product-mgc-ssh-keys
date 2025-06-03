@@ -1,13 +1,163 @@
-# Terraform Secure Template
+# Terraform SSH Keys Management - Magalu Cloud
 
-Este repositório é um template para projetos Terraform, com foco em segurança desde o início. Ele integra práticas, ferramentas e automações para garantir a proteção do código, infraestrutura e cadeia de dependências.
+Este projeto configura e gerencia chaves SSH na Magalu Cloud usando Terraform com CI/CD via GitHub Actions.
 
-## Funcionalidades
+## 🏗️ Estrutura do Projeto
 
-- **Pipeline CI/CD seguro** com validações automáticas
-- **Análise de segurança de código e dependências**
-- **Política de permissões mínimas no GitHub Actions**
-- **Pronto para uso em novos projetos Terraform**
+```
+product-mgc-ssh-keys/
+├── .github/
+│   └── workflows/
+│       └── terraform.yml      # Pipeline CI/CD
+├── main.tf                    # Configuração principal
+├── variables.tf               # Definição de variáveis
+├── versions.tf                # Providers e backend
+├── outputs.tf                 # Outputs (se houver)
+└── README.md                  # Este arquivo
+```
+
+## 🔧 Pré-requisitos
+
+1. **Conta na Magalu Cloud** com acesso às APIs
+2. **Repositório GitHub** para hospedar o código
+3. **Bucket S3 na Magalu Cloud** para armazenar o state do Terraform
+
+## ⚙️ Configuração
+
+### 1. Secrets do GitHub
+
+Configure os seguintes secrets no seu repositório GitHub (Settings → Secrets and variables → Actions):
+
+| Secret Name      | Descrição                             | Exemplo                      |
+| ---------------- | ------------------------------------- | ---------------------------- |
+| `MGC_API_KEY`    | API Key da Magalu Cloud               | `your-api-key-here`          |
+| `MGC_KEY_ID`     | Access Key ID para Object Storage     | `your-access-key-id`         |
+| `MGC_KEY_SECRET` | Secret Access Key para Object Storage | `your-secret-access-key`     |
+| `SSH_KEY_VALUE`  | Conteúdo da chave SSH pública         | `ssh-rsa AAAAB3NzaC1yc2E...` |
+
+### 2. Backend S3 (Object Storage)
+
+No arquivo `versions.tf`, atualize o nome do bucket:
+
+```hcl
+terraform {
+  backend "s3" {
+    bucket   = "SEU-BUCKET-TERRAFORM-STATE"  # ← Altere aqui
+    key      = "ssh-keys/terraform.tfstate"
+    region   = "br-se1"
+    endpoint = "https://s3.br-se1.magaluobjects.com"
+    # ... outras configurações
+  }
+}
+```
+
+### 3. Configuração Local (Opcional)
+
+Para executar localmente, crie um arquivo `terraform.tfvars`:
+
+```hcl
+ssh_key_value    = "ssh-rsa AAAAB3NzaC1yc2E..."
+ssh_key_name     = "minha-chave-ssh"
+mgc_api_key      = "your-api-key"
+mgc_key_id       = "your-access-key-id"
+mgc_key_secret   = "your-secret-access-key"
+```
+
+⚠️ **IMPORTANTE**: Nunca commite o arquivo `terraform.tfvars` com dados sensíveis!
+
+## 🚀 Como Usar
+
+### Execução via GitHub Actions (Recomendado)
+
+O pipeline é executado automaticamente quando:
+- Você faz push para a branch `main`
+- Você abre um Pull Request para a branch `main`
+
+### Execução Local
+
+```bash
+# 1. Clone o repositório
+git clone <seu-repositorio>
+cd product-mgc-ssh-keys
+
+# 2. Configure as variáveis de ambiente
+export TF_VAR_mgc_api_key="your-api-key"
+export TF_VAR_mgc_key_id="your-access-key-id"
+export TF_VAR_mgc_key_secret="your-secret-access-key"
+export TF_VAR_ssh_key_value="ssh-rsa AAAAB3NzaC1yc2E..."
+
+# Para o backend S3
+export AWS_ACCESS_KEY_ID="your-access-key-id"
+export AWS_SECRET_ACCESS_KEY="your-secret-access-key"
+
+# 3. Execute os comandos Terraform
+terraform init
+terraform plan
+terraform apply
+```
+
+## 🔄 Pipeline CI/CD
+
+O pipeline GitHub Actions executa os seguintes passos:
+
+1. **Checkout**: Baixa o código do repositório
+2. **Setup Terraform**: Instala o Terraform v1.9.3
+3. **Init**: Inicializa o Terraform com backend remoto
+4. **Format**: Verifica formatação do código
+5. **Validate**: Valida a sintaxe dos arquivos
+6. **Test**: Executa testes do Terraform (se configurados)
+7. **Plan**: Gera o plano de execução
+8. **Apply**: Aplica as mudanças (apenas na branch main)
+
+## 📋 Variáveis
+
+| Variável         | Tipo   | Descrição                             | Padrão              |
+| ---------------- | ------ | ------------------------------------- | ------------------- |
+| `ssh_key_value`  | string | Conteúdo da chave SSH pública         | -                   |
+| `ssh_key_name`   | string | Nome para identificar a chave SSH     | "terraform-ssh-key" |
+| `mgc_api_key`    | string | API Key da Magalu Cloud               | -                   |
+| `mgc_key_id`     | string | Access Key ID para Object Storage     | -                   |
+| `mgc_key_secret` | string | Secret Access Key para Object Storage | -                   |
+
+## 🔐 Segurança
+
+- **Secrets**: Todas as informações sensíveis são armazenadas como GitHub Secrets
+- **State Remoto**: O state do Terraform é armazenado de forma segura no Object Storage da Magalu Cloud
+- **Credenciais**: As credenciais nunca são expostas nos logs do GitHub Actions
+
+## 🐛 Troubleshooting
+
+### Erro de autenticação no backend S3
+```
+Error: Failed to get existing workspaces: S3 bucket does not exist
+```
+**Solução**: Verifique se o bucket existe e se as credenciais `MGC_KEY_ID` e `MGC_KEY_SECRET` estão corretas.
+
+### Erro no provider MGC
+```
+Error: Invalid API key
+```
+**Solução**: Verifique se o secret `MGC_API_KEY` está configurado corretamente.
+
+### Chave SSH inválida
+```
+Error: Invalid SSH key format
+```
+**Solução**: Verifique se o `SSH_KEY_VALUE` contém uma chave SSH pública válida (formato: `ssh-rsa AAAAB3...` ou `ssh-ed25519 AAAAC3...`).
+
+## 📚 Documentação Adicional
+
+- [Terraform MGC Provider](https://registry.terraform.io/providers/magalucloud/mgc/latest/docs)
+- [Magalu Cloud API Documentation](https://docs.magalu.cloud/)
+- [GitHub Actions Documentation](https://docs.github.com/en/actions)
+
+## 🤝 Contribuição
+
+1. Fork o projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
+3. Commit suas mudanças (`git commit -am 'Adiciona nova feature'`)
+4. Push para a branch (`git push origin feature/nova-feature`)
+5. Abra um Pull Request
 
 ## Workflows e Soluções de Segurança
 
