@@ -38,6 +38,12 @@ done
 
 echo "🎉 Todas as variáveis estão configuradas!"
 
+# Verificar se o Terraform está instalado
+if ! command -v terraform >/dev/null 2>&1; then
+    echo "❌ Terraform não encontrado! Instale o Terraform e adicione ao PATH."
+    exit 1
+fi
+
 # Executar comando terraform
 cmd=${1:-plan}
 case $cmd in

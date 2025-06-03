@@ -41,28 +41,39 @@ product-mgc-ssh-keys/
 
 Configure os seguintes secrets no seu repositório GitHub (Settings → Secrets and variables → Actions):
 
-| Secret Name      | Descrição                             | Exemplo                      |
-| ---------------- | ------------------------------------- | ---------------------------- |
-| `MGC_API_KEY`    | API Key da Magalu Cloud               | `your-api-key-here`          |
-| `MGC_KEY_ID`     | Access Key ID para Object Storage     | `your-access-key-id`         |
-| `MGC_KEY_SECRET` | Secret Access Key para Object Storage | `your-secret-access-key`     |
-| `SSH_KEY_VALUE`  | Conteúdo da chave SSH pública         | `ssh-rsa AAAAB3NzaC1yc2E...` |
+| Secret Name        | Descrição                                 | Exemplo                      |
+| ------------------ | ----------------------------------------- | ---------------------------- |
+| `MGC_API_KEY`      | API Key da Magalu Cloud                   | `your-api-key-here`          |
+| `MGC_KEY_ID`       | Access Key ID para Object Storage         | `your-access-key-id`         |
+| `MGC_KEY_SECRET`   | Secret Access Key para Object Storage     | `your-secret-access-key`     |
+| `R2_ACCESS_KEY`    | Access Key ID do Cloudflare R2            | `your-r2-access-key`         |
+| `R2_ACCESS_SECRET` | Secret Access Key do Cloudflare R2        | `your-r2-secret-key`         |
+| `SSH_KEY_VALUE`    | Conteúdo da chave SSH pública             | `ssh-rsa AAAAB3NzaC1yc2E...` |
 
-### 2. Backend S3 (Object Storage)
+> **Importante:** Nunca exponha esses secrets em código, logs ou arquivos versionados. Mantenha-os apenas no GitHub Secrets.
+>
+> - [Magalu Cloud Console](https://console.magalu.cloud/) — para obter as credenciais da Magalu Cloud
+> - [Cloudflare Dashboard](https://dash.cloudflare.com/) — para acessar o R2 e gerar as credenciais
 
-No arquivo `versions.tf`, atualize o nome do bucket:
+### 2. Backend Cloudflare R2
+
+No arquivo `versions.tf`, configure o backend S3 apontando para o endpoint do Cloudflare R2:
 
 ```hcl
 terraform {
   backend "s3" {
-    bucket   = "SEU-BUCKET-TERRAFORM-STATE"  # ← Altere aqui
+    bucket   = "SEU-BUCKET-R2"  # ← Altere aqui para o nome do bucket no R2
     key      = "ssh-keys/terraform.tfstate"
-    region   = "br-se1"
-    endpoint = "https://s3.br-se1.magaluobjects.com"
-    # ... outras configurações
+    region   = "auto"           # Cloudflare R2 não exige região específica
+    endpoint = "https://<accountid>.r2.cloudflarestorage.com" # endpoint R2
+    skip_credentials_validation = true
+    skip_metadata_api_check     = true
+    force_path_style            = true
   }
 }
 ```
+
+> **Dica:** Consulte o painel do Cloudflare R2 para obter o endpoint correto do seu bucket/account.
 
 ### 3. Configuração Local (Opcional)
 
@@ -72,8 +83,8 @@ Para executar localmente, crie um arquivo `terraform.tfvars`:
 ssh_key_value    = "ssh-rsa AAAAB3NzaC1yc2E..."
 ssh_key_name     = "minha-chave-ssh"
 mgc_api_key      = "your-api-key"
-mgc_key_id       = "your-access-key-id"
-mgc_key_secret   = "your-secret-access-key"
+r2_access_key    = "your-r2-access-key"
+r2_access_secret = "your-r2-secret-key"
 ```
 
 ⚠️ **IMPORTANTE**: Nunca commite o arquivo `terraform.tfvars` com dados sensíveis!
@@ -175,11 +186,23 @@ O pipeline GitHub Actions executa os seguintes passos:
 
 ## 🐛 Troubleshooting
 
-### Erro de autenticação no backend S3
+### Erro de autenticação no backend R2/S3
 ```
 Error: Failed to get existing workspaces: S3 bucket does not exist
 ```
-**Solução**: Verifique se o bucket existe e se as credenciais `MGC_KEY_ID` e `MGC_KEY_SECRET` estão corretas.
+**Solução**: Verifique se o bucket existe no Cloudflare R2 e se as credenciais `R2_ACCESS_KEY` e `R2_ACCESS_SECRET` estão corretas.
+
+### Erro de permissão no backend
+```
+Error: AccessDenied: Access Denied
+```
+**Solução**: Confirme se o usuário configurado tem permissão de leitura e escrita no bucket do R2.
+
+### Erro de endpoint ou rede
+```
+Error: dial tcp: lookup <endpoint> no such host
+```
+**Solução**: Verifique se o endpoint do R2 está correto e se não há bloqueio de rede/firewall.
 
 ### Erro no provider MGC
 ```
@@ -192,6 +215,24 @@ Error: Invalid API key
 Error: Invalid SSH key format
 ```
 **Solução**: Verifique se o `SSH_KEY_VALUE` contém uma chave SSH pública válida (formato: `ssh-rsa AAAAB3...` ou `ssh-ed25519 AAAAC3...`).
+
+### Erro de variável obrigatória não definida
+```
+Error: Missing required argument
+```
+**Solução**: Certifique-se de que todas as variáveis obrigatórias estão definidas no arquivo `terraform.tfvars` ou como secrets no GitHub.
+
+### Erro de credenciais ausentes no pipeline
+```
+Error: No valid credential sources found
+```
+**Solução**: Confirme se os secrets `R2_ACCESS_KEY` e `R2_ACCESS_SECRET` estão cadastrados corretamente no GitHub e se o workflow está usando os nomes corretos.
+
+### Erro de permissão negada ao executar scripts
+```
+./tools/terraform-apply.sh: Permission denied
+```
+**Solução**: Dê permissão de execução ao script com `chmod +x tools/terraform-apply.sh`.
 
 ## 📚 Documentação Adicional
 

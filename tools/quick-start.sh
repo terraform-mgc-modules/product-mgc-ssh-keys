@@ -41,8 +41,8 @@ if [ ! -f .env ]; then
         print_color $YELLOW "⚠️  IMPORTANTE: Edite o arquivo .env com suas credenciais reais!"
         echo ""
         print_color $BLUE "Variáveis que você precisa configurar:"
-        echo "• R2_ACCESS_KEY_ID"
-        echo "• R2_SECRET_ACCESS_KEY" 
+        echo "• R2_ACCESS_KEY"
+        echo "• R2_ACCESS_SECRET" 
         echo "• MGC_API_KEY"
         echo "• MGC_KEY_ID"
         echo "• MGC_KEY_SECRET"
@@ -52,6 +52,7 @@ if [ ! -f .env ]; then
         read -p "Pressione Enter após configurar o arquivo .env..."
     else
         print_color $RED "❌ Arquivo .env.example não encontrado!"
+        print_color $YELLOW "ℹ️  Crie manualmente o arquivo .env seguindo o modelo disponível na documentação do projeto ou baixe o .env.example do repositório."
         exit 1
     fi
 else
