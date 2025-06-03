@@ -6,8 +6,8 @@
 **/.terraform/*
 
 # .tfstate files
-# *.tfstate
-# *.tfstate.*
+*.tfstate
+*.tfstate.*
 
 # Crash log files
 crash.log
@@ -36,5 +36,10 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+# Environment variables
+.env
+.env.local
+.env.*.local
 
 # End of https://www.toptal.com/developers/gitignore/api/terraform
