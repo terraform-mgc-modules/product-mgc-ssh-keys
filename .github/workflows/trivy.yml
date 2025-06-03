@@ -1,9 +1,9 @@
 ---
-name: Generate SBOM
+name: Generate SBOM with Trivy
 on:
   push:
     branches:
-    - main
+      - main
 
 permissions:
   contents: read
@@ -18,8 +18,8 @@ jobs:
       - name: Run Trivy in GitHub SBOM mode and submit results to Dependency Graph
         uses: aquasecurity/trivy-action@6c175e9c4083a92bbca2f9724c8a5e33bc2d97a5 # v0.30.0
         with:
-          scan-type: 'fs'
-          format: 'github'
-          output: 'dependency-results.sbom.json'
-          image-ref: '.'
+          scan-type: "fs"
+          format: "github"
+          output: "dependency-results.sbom.json"
+          image-ref: "."
           github-pat: ${{ secrets.USER_TOKEN }}
