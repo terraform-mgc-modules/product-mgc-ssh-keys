@@ -33,7 +33,7 @@ product-mgc-ssh-keys/
 
 1. **Conta na Magalu Cloud** com acesso às APIs
 2. **Repositório GitHub** para hospedar o código
-3. **Bucket S3 na Magalu Cloud** para armazenar o state do Terraform
+3. **Bucket no Cloudflare R2** para armazenar o state do Terraform
 
 ## ⚙️ Configuração
 
@@ -150,10 +150,9 @@ export TF_VAR_ssh_key_value="ssh-rsa AAAAB3NzaC1yc2E..."
 export AWS_ACCESS_KEY_ID="your-access-key-id"
 export AWS_SECRET_ACCESS_KEY="your-secret-access-key"
 
-# 3. Execute os comandos Terraform
-terraform init
-terraform plan
-terraform apply
+# Para o backend Cloudflare R2
+export R2_ACCESS_KEY="your-r2-access-key"
+export R2_ACCESS_SECRET="your-r2-secret-secret"
 ```
 
 ## 🔄 Pipeline CI/CD

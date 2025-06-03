@@ -53,8 +53,8 @@ Configure estes secrets no seu repositório GitHub:
 
 | Secret Name            | Descrição             | Onde Obter                                       |
 | ---------------------- | --------------------- | ------------------------------------------------ |
-| `R2_ACCESS_KEY_ID`     | R2 Access Key ID      | Cloudflare Dashboard → R2 → Manage R2 API tokens |
-| `R2_SECRET_ACCESS_KEY` | R2 Secret Access Key  | Cloudflare Dashboard → R2 → Manage R2 API tokens |
+| `R2_ACCESS_KEY`        | R2 Access Key ID      | Cloudflare Dashboard → R2 → Manage R2 API tokens |
+| `R2_ACCESS_SECRET`     | R2 Secret Access Key  | Cloudflare Dashboard → R2 → Manage R2 API tokens |
 | `CLOUDFLARE_API_TOKEN` | Cloudflare API Token  | Cloudflare Dashboard → My Profile → API Tokens   |
 | `MGC_API_KEY`          | Magalu Cloud API Key  | Magalu Cloud Console                             |
 | `MGC_KEY_ID`           | MGC Access Key ID     | Magalu Cloud Console                             |
