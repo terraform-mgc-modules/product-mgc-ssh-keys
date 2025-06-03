@@ -29,6 +29,10 @@ jobs:
       - name: Terraform Init
         run: terraform init -upgrade
         env:
+          # Credenciais para o backend S3 (Magalu Cloud Object Storage)
+          AWS_ACCESS_KEY_ID: ${{ secrets.MGC_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.MGC_KEY_SECRET }}
+          # Variáveis do Terraform para o provider MGC
           TF_VAR_ssh_key_value: ${{ secrets.SSH_KEY_VALUE }}
           TF_VAR_mgc_api_key: ${{ secrets.MGC_API_KEY }}
           TF_VAR_mgc_key_id: ${{ secrets.MGC_KEY_ID }}

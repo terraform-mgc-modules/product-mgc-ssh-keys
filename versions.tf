@@ -1,9 +1,13 @@
 terraform {
   backend "s3" {
-    bucket                      = "granato-hcl"
-    key                         = "ssh-keys/terraform.tfstate"
-    region                      = "br-se1"
-    endpoint                    = "https://s3.br-se1.magaluobjects.com"
+    bucket = "granato-hcl"
+    key    = "ssh-keys/terraform.tfstate"
+    region = "br-se1"
+
+    endpoints = {
+      s3 = "https://s3.br-se1.magaluobjects.com"
+    }
+
     skip_credentials_validation = true
     skip_metadata_api_check     = true
     skip_region_validation      = true
