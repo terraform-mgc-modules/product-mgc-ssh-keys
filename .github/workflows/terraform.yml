@@ -41,15 +41,15 @@ jobs:
           echo "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:+set}"
           echo "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:+set}"
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_ACCESS_SECRET }}
 
       - name: Terraform Init
         run: terraform init -upgrade
         env:
           # Credenciais para o backend Cloudflare R2 (usa variáveis AWS)
-          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_ACCESS_SECRET }}
           # Cloudflare API Token (para provider cloudflare se necessário)
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           
@@ -61,29 +61,29 @@ jobs:
 
       - name: Terraform Format
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_ACCESS_SECRET }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: terraform fmt -check -recursive -diff
 
       - name: Terraform Validate
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_ACCESS_SECRET }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: terraform validate
 
       - name: Terraform Test
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_ACCESS_SECRET }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: terraform test
 
       - name: Terraform Plan
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_ACCESS_SECRET }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           TF_VAR_ssh_key_value: ${{ secrets.SSH_KEY_VALUE }}
           TF_VAR_mgc_api_key: ${{ secrets.MGC_API_KEY }}
@@ -94,8 +94,8 @@ jobs:
       - name: Terraform Apply
         if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'apply' }}
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_ACCESS_SECRET }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           TF_VAR_ssh_key_value: ${{ secrets.SSH_KEY_VALUE }}
           TF_VAR_mgc_api_key: ${{ secrets.MGC_API_KEY }}
@@ -106,8 +106,8 @@ jobs:
       - name: Terraform Destroy
         if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'destroy' }}
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_ACCESS_SECRET }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           TF_VAR_ssh_key_value: ${{ secrets.SSH_KEY_VALUE }}
           TF_VAR_mgc_api_key: ${{ secrets.MGC_API_KEY }}
