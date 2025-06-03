@@ -2,15 +2,21 @@
 # Copie este arquivo para terraform.tfvars e preencha com seus valores reais
 # IMPORTANTE: Nunca commite o arquivo terraform.tfvars com dados reais!
 
+# === SSH KEY ===
 # Nome da chave SSH (opcional, já tem valor padrão em variables.tf)
 ssh_key_name = "minha-chave-ssh"
 
 # Conteúdo da chave SSH pública
 ssh_key_value = "ssh-rsa AAAAB3NzaC1yc2E... your-email@example.com"
 
+# === MAGALU CLOUD ===
 # API Key da Magalu Cloud
 mgc_api_key = "your-mgc-api-key-here"
 
-# Credenciais para Object Storage
-mgc_key_id     = "your-access-key-id"
-mgc_key_secret = "your-secret-access-key"
+# Credenciais MGC para provider
+mgc_key_id     = "your-mgc-access-key-id"
+mgc_key_secret = "your-mgc-secret-access-key"
+
+# === CLOUDFLARE ===
+# Account ID do Cloudflare (opcional, já tem valor padrão)
+cloudflare_account_id = "4839c9636a58fa9490bbe3d2e686ad98"

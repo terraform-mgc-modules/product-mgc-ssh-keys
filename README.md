@@ -9,10 +9,23 @@ product-mgc-ssh-keys/
 ├── .github/
 │   └── workflows/
 │       └── terraform.yml      # Pipeline CI/CD
+├── tools/                     # Scripts utilitários
+│   ├── README.md              # Documentação dos scripts
+│   ├── terraform-plan.sh      # Script para terraform plan
+│   ├── terraform-apply.sh     # Script para terraform apply
+│   ├── terraform-destroy.sh   # Script para terraform destroy
+│   ├── setup-terraform-vars.sh # Script avançado com parâmetros
+│   └── test-r2-backend.sh     # Teste de conectividade R2
+├── docs/                      # Documentação adicional
+│   ├── README.md              # Índice da documentação
+│   └── R2-READY-CHECK.md      # Guia de configuração R2
 ├── main.tf                    # Configuração principal
 ├── variables.tf               # Definição de variáveis
-├── versions.tf                # Providers e backend
-├── outputs.tf                 # Outputs (se houver)
+├── versions.tf                # Providers e backend (Cloudflare R2)
+├── outputs.tf                 # Outputs do Terraform
+├── terraform.tfvars           # Configurações de variáveis
+├── terraform.tfvars.example   # Exemplo de configurações
+├── .env.example               # Exemplo de variáveis de ambiente
 └── README.md                  # Este arquivo
 ```
 
@@ -64,6 +77,41 @@ mgc_key_secret   = "your-secret-access-key"
 ```
 
 ⚠️ **IMPORTANTE**: Nunca commite o arquivo `terraform.tfvars` com dados sensíveis!
+
+## 🛠️ Scripts Utilitários
+
+O projeto inclui scripts na pasta `tools/` para facilitar o uso do Terraform:
+
+### Início Rápido (Novos Usuários)
+
+```bash
+# Configuração automática (uma vez)
+cd tools && ./quick-start.sh
+```
+
+### Execução Rápida
+
+```bash
+# Menu interativo (recomendado)
+cd tools && ./terraform-menu.sh
+
+# Ou comandos específicos:
+cd tools && ./terraform-plan.sh    # terraform plan
+cd tools && ./terraform-apply.sh   # terraform apply
+cd tools && ./terraform-destroy.sh # terraform destroy
+cd tools && ./test-r2-backend.sh   # testar R2
+```
+
+### Script Avançado
+
+```bash
+cd tools
+./setup-terraform-vars.sh plan    # terraform plan
+./setup-terraform-vars.sh apply   # terraform apply
+./setup-terraform-vars.sh destroy # terraform destroy
+```
+
+📖 **Para mais detalhes sobre os scripts, consulte:** `tools/README.md`
 
 ## 🚀 Como Usar
 
@@ -203,16 +251,9 @@ Error: Invalid SSH key format
 - **Política de Segurança:** Veja [SECURITY.md](SECURITY.md) para detalhes sobre reporte de vulnerabilidades e práticas adotadas.
 - **Code of Conduct:** Ambiente colaborativo e respeitoso ([CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)).
 
-## Como usar este template
-
-1. Clique em `Use this template` no GitHub.
-2. Siga as instruções para criar seu novo repositório.
-3. Adapte os workflows conforme as necessidades do seu projeto.
 
 ## Contato
 
 Para dúvidas ou reporte de vulnerabilidades, consulte o [SECURITY.md](SECURITY.md).
 
 ---
-
-Feito com ❤️ por [Natália Granato](https://github.com/nataliagranato).
