@@ -17,17 +17,6 @@ Esta pasta contém workflows automatizados do GitHub Actions para garantir quali
 - **Output**: Relatórios SARIF para GitHub Security tab
 - **Políticas**: AWS security policies
 
-### `scorecard.yml` 
-- **Função**: Avalia práticas de segurança da cadeia de suprimentos
-- **Triggers**: Push para main, schedule semanal
-- **Análise**: Branch protection, dependabot, workflows, tokens
-- **Framework**: OSSF Scorecard
-
-### `osv-scanner.yml`
-- **Função**: Detecção de vulnerabilidades conhecidas
-- **Triggers**: Push, PR, schedule diário
-- **Base**: OSV (Open Source Vulnerabilities) database
-
 ### `trivy.yml`
 - **Função**: Geração de SBOM e análise de vulnerabilidades
 - **Output**: Dependency Graph integration
@@ -89,7 +78,7 @@ Recomenda-se configurar branch protection rules para `main`:
 
 Os resultados dos workflows de segurança são visíveis em:
 
-- **Security tab**: Relatórios SARIF (Terrascan, Scorecard)
+- **Security tab**: Relatórios SARIF (Terrascan)
 - **Dependency Graph**: Vulnerabilidades e dependências
 - **Actions tab**: Logs de execução
 - **Pull Requests**: Checks obrigatórios
@@ -104,4 +93,3 @@ Os workflows são mantidos atualizados automaticamente via Dependabot. Versões 
 - `github/codeql-action/upload-sarif`: v3.28.15
 - `hashicorp/setup-terraform`: v3
 - `aquasecurity/trivy-action`: v0.30.0
-- `google/osv-scanner-action`: v2.0.2

@@ -36,9 +36,7 @@ print_color $BLUE "📋 Verificando workflows..."
 workflows=(
     ".github/workflows/terraform.yml"
     ".github/workflows/terrascan.yml"
-    ".github/workflows/osv-scanner.yml"
     ".github/workflows/trivy.yml"
-    ".github/workflows/scorecard.yml"
     ".github/workflows/dependency-review.yml"
 )
 
